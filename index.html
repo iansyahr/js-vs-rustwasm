@@ -12,6 +12,10 @@
         #result {
             margin-top: 20px;
         }
+        #timeElapsed {
+            margin-top: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -26,6 +30,54 @@
     <div id="result"></div>
     <div id="timeElapsed"></div>
 
-    <script src="script.js"></script>
+    <script>
+        function factorial(n) {
+            if (n === 0 || n === 1) {
+                return 1;
+            }
+            return n * factorial(n - 1);
+        }
+
+        function calculateExponential(x, terms) {
+            let sum = 1; // Start with the 0th term
+            for (let i = 1; i < terms; i++) {
+                sum += Math.pow(x, i) / factorial(i);
+            }
+            return sum;
+        }
+
+        async function heavyComputation(x, terms) {
+            const startTime = performance.now();
+
+            for (let i = 0; i < 1000; i++) {
+                let result = calculateExponential(x, terms);
+                // Simulate asynchronous computation
+                await new Promise(resolve => setTimeout(resolve, 0));
+            }
+
+            const endTime = performance.now();
+            const timeElapsed = endTime - startTime;
+            return timeElapsed;
+        }
+
+        document.getElementById("startButton").addEventListener("click", async () => {
+            const x = parseFloat(document.getElementById("xValue").value);
+            const terms = parseInt(document.getElementById("termsValue").value);
+
+            if (isNaN(x) || isNaN(terms)) {
+                alert("Please enter valid numbers for x and terms.");
+                return;
+            }
+
+            const resultDiv = document.getElementById("result");
+            const timeElapsedDiv = document.getElementById("timeElapsed");
+            resultDiv.textContent = "Computing...";
+            timeElapsedDiv.textContent = "";
+
+            const timeElapsed = await heavyComputation(x, terms);
+            resultDiv.textContent = "Computation completed!";
+            timeElapsedDiv.textContent = `Time elapsed: ${timeElapsed.toFixed(2)} milliseconds`;
+        });
+    </script>
 </body>
 </html>
