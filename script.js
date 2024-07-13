@@ -15,6 +15,7 @@ function calculateExponential(x, terms) {
 
 async function heavyComputation(x, terms) {
     console.time("Heavy Computation");
+    const startTime = performance.now();
 
     for (let i = 0; i < 1000; i++) {
         let result = calculateExponential(x, terms);
@@ -22,8 +23,10 @@ async function heavyComputation(x, terms) {
         await new Promise(resolve => setTimeout(resolve, 0));
     }
 
+    const endTime = performance.now();
     console.timeEnd("Heavy Computation");
-    return "Computation completed!";
+    const timeElapsed = endTime - startTime;
+    return timeElapsed;
 }
 
 document.getElementById("startButton").addEventListener("click", async () => {
@@ -31,7 +34,11 @@ document.getElementById("startButton").addEventListener("click", async () => {
     const terms = parseInt(document.getElementById("termsValue").value);
 
     const resultDiv = document.getElementById("result");
+    const timeElapsedDiv = document.getElementById("timeElapsed");
     resultDiv.textContent = "Computing...";
-    const result = await heavyComputation(x, terms);
-    resultDiv.textContent = result;
+    timeElapsedDiv.textContent = "";
+
+    const timeElapsed = await heavyComputation(x, terms);
+    resultDiv.textContent = "Computation completed!";
+    timeElapsedDiv.textContent = `Time elapsed: ${timeElapsed.toFixed(2)} milliseconds`;
 });
