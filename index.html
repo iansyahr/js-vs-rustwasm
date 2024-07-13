@@ -19,7 +19,7 @@
     </style>
 </head>
 <body>
-    <h1>Heavy Computation with Async Function</h1>
+    <h1>Heavy Computation</h1>
     <label for="xValue">Enter x value:</label>
     <input type="number" id="xValue" placeholder="5">
     <br>
@@ -46,13 +46,11 @@
             return sum;
         }
 
-        async function heavyComputation(x, terms) {
+        function heavyComputation(x, terms) {
             const startTime = performance.now();
 
             for (let i = 0; i < 1000; i++) {
                 let result = calculateExponential(x, terms);
-                // Simulate asynchronous computation
-                await new Promise(resolve => setTimeout(resolve, 0));
             }
 
             const endTime = performance.now();
@@ -60,7 +58,7 @@
             return timeElapsed;
         }
 
-        document.getElementById("startButton").addEventListener("click", async () => {
+        document.getElementById("startButton").addEventListener("click", () => {
             const x = parseFloat(document.getElementById("xValue").value);
             const terms = parseInt(document.getElementById("termsValue").value);
 
@@ -74,7 +72,7 @@
             resultDiv.textContent = "Computing...";
             timeElapsedDiv.textContent = "";
 
-            const timeElapsed = await heavyComputation(x, terms);
+            const timeElapsed = heavyComputation(x, terms);
             resultDiv.textContent = "Computation completed!";
             timeElapsedDiv.textContent = `Time elapsed: ${timeElapsed.toFixed(2)} milliseconds`;
         });
