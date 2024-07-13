@@ -26,6 +26,7 @@ async function heavyComputation(x, terms) {
     const endTime = performance.now();
     console.timeEnd("Heavy Computation");
     const timeElapsed = endTime - startTime;
+    console.log(timeElapsed)
     return timeElapsed;
 }
 
